@@ -1,5 +1,7 @@
 <template>
-  <div>nihao</div>
+  <div>
+    home
+  </div>
 </template>
 
 <script>

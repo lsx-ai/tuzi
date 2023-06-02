@@ -1,5 +1,5 @@
 <template>
-  <div>nihao</div>
+  <div>category</div>
 </template>
 
 <script>
