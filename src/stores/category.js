@@ -8,7 +8,7 @@ export const useCounterStore = defineStore('category', () => {
     //action
     const getCategory = async()=>{
     const res = await getCategoryAPI()
-    console.log(res);
+    // console.log(res);
     categoryList.value = res.result
 }
 return{

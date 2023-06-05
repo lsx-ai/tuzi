@@ -1,13 +1,44 @@
-<template>
-  <div>轮播图</div>
-</template>
-
-<script>
-export default {
-
+<script setup>
+import { getBannerAPI } from '@/apis/home';
+import { onMounted, ref } from 'vue';
+let bannerData = ref([])
+async function getBanner(){
+  const res = await getBannerAPI()
+  // console.log(bannerData);
+  bannerData.value = res.result
 }
+onMounted(()=>{
+  getBanner()
+})
+console.log(bannerData);
 </script>
 
-<style>
 
+
+<template>
+  <div class="home-banner">
+    <el-carousel height="500px">
+      <el-carousel-item v-for="item in bannerData" :key="item.id">
+        <img :src="item.imgUrl" alt="">
+      </el-carousel-item>
+    </el-carousel>
+  </div>
+</template>
+
+
+
+<style scoped lang='scss'>
+.home-banner {
+  width: 1240px;
+  height: 500px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 98;
+
+  img {
+    width: 100%;
+    height: 500px;
+  }
+}
 </style>

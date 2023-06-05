@@ -4,7 +4,7 @@ import getCategoryAPI from "@/apis/layout.js";
 import { ref } from "vue";
 
 const categoryList = ref([])
-console.log(categoryList);
+// console.log(categoryList);
 const getCategory = async ()=>{
   const headData= await getCategoryAPI()
   // console.log(headData.result);

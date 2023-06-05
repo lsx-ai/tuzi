@@ -3,7 +3,7 @@ import getCategory from '@/apis/testApi';
 import { useCounterStore } from '@/stores/category';
 import { onMounted } from 'vue';
 const categoryStore = useCounterStore()
-console.log(categoryStore.categoryList);
+// console.log(categoryStore.categoryList);
 onMounted(()=>{
     categoryStore.getCategory()
 })
