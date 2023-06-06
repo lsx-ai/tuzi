@@ -16,10 +16,5 @@ import HomePanel from './components/HomePanel.vue'
   <HomeHot />
   <HomeProduct />
   <!-- 复用的组件 -->
-  <HomePanel title="新鲜好物" subTitle="新鲜好物 好多商品">
-    
-  </HomePanel>
-  <HomePanel title="人气好物" subTitle="新鲜好物 好多商品">
-
-</HomePanel>
+ 
 </template>

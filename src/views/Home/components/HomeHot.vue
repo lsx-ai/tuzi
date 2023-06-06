@@ -6,7 +6,7 @@ let hot = ref([])
 async function getHotData(){
   const res = await findHotAPI()
   hot.value = res.result
-  console.log(hot.value);
+  // console.log(hot.value);
 }
 onMounted(()=>{
   getHotData()
@@ -19,7 +19,7 @@ onMounted(()=>{
     <ul class="goods-list">
     <li v-for="item in hot" :key="item.id">
       <RouterLink to="/">
-        <img :src="item.picture" alt="" />
+        <img v-img-lazy="item.picture" alt="" />
         <p class="name">{{ item.title }}</p>
         <p class="subtitle">{{ item.alt }}</p>
         <!-- <p class="price">&yen;{{ item.price }}</p> -->

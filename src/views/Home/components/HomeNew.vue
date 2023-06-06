@@ -8,7 +8,7 @@ let xinxian = ref([])
 async function getXinaxian(){
     const res = await findNewAPI()
     xinxian.value = res.result
-    console.log(xinxian.value);
+    // console.log(xinxian.value);
 }
 onMounted(()=>{
     getXinaxian()

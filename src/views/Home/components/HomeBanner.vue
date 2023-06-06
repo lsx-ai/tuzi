@@ -10,7 +10,7 @@ async function getBanner(){
 onMounted(()=>{
   getBanner()
 })
-console.log(bannerData);
+// console.log(bannerData);
 </script>
 
 
