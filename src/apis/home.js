@@ -1,8 +1,13 @@
 import httpInstance from "@/untils/https"; 
 //获取banner数据
-export function getBannerAPI(){
+export function getBannerAPI(params={}){
+    //默认唯一，是首页轮播
+    const {distributionSite='1'} = params
     return httpInstance({
-        url:'/home/banner'
+        url:'/home/banner',
+        params:{
+            distributionSite
+        }
     })
 }
 export function findNewAPI(){

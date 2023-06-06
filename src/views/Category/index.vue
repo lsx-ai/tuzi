@@ -2,20 +2,35 @@
 import  {getCategoryAPI}  from "@/apis/category.js";
 import { onMounted, onUpdated, ref } from "vue";
 import { useRoute } from "vue-router";
-
+import { getBannerAPI } from "@/apis/home";
+import GoodsItem from "../Home/components/GoodsItem.vue";
 const categoryData = ref({})
 const route = useRoute()
 const getCategory= async()=>{
   const res = await getCategoryAPI(route.params.id)
   categoryData.value = res.result
-  console.log(res);
+  // console.log(res);
 }
 onMounted(()=>getCategory())
 onUpdated(()=>getCategory())
+
+//获取banner
+let bannerData = ref([])
+async function getBanner(){
+  const res = await getBannerAPI({
+    distributionSite:'2'
+  })
+  console.log(bannerData);
+  bannerData.value = res.result
+}
+onMounted(()=>{
+  getBanner()
+})
 </script>
 
 <template>
-  <div class="container ">
+  <div class="top-category ">
+    <div class="container m-top-20">
     <!-- 面包屑 -->
     <div class="bread-container">
       <el-breadcrumb separator=">">
@@ -25,16 +40,34 @@ onUpdated(()=>getCategory())
         <!-- <el-breadcrumb-item>居家</el-breadcrumb-item> -->
       </el-breadcrumb>
     </div>
-    <div class="sub-container">
-      <el-tabs>
-        <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
-        <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
-        <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
-      </el-tabs>
-      <div class="body">
-         <!-- 商品列表-->
-      </div>
-    </div>
+    <div class="home-banner">
+    <el-carousel height="500px">
+      <el-carousel-item v-for="item in bannerData" :key="item.id">
+        <img :src="item.imgUrl" alt="">
+      </el-carousel-item>
+    </el-carousel>
+  </div>
+
+  <div class="sub-list">
+  <h3>全部分类</h3>
+  <ul>
+    <li v-for="i in categoryData.children" :key="i.id">
+      <RouterLink to="/">
+        <img :src="i.picture" />
+        <p>{{ i.name }}</p>
+      </RouterLink>
+    </li>
+  </ul>
+</div>
+<div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
+  <div class="head">
+    <h3>- {{ item.name }}-</h3>
+  </div>
+  <div class="body">
+    <GoodsItem v-for="good in item.goods" :goods="good" :key="good.id" />
+  </div>
+</div>
+</div>
   </div>
 
 </template>
@@ -42,58 +75,94 @@ onUpdated(()=>getCategory())
 
 
 <style lang="scss" scoped>
-.bread-container {
-  padding: 25px 0;
-  color: #666;
+
+.top-category {
+  h3 {
+    font-size: 28px;
+    color: #666;
+    font-weight: normal;
+    text-align: center;
+    line-height: 100px;
+  }
+
+  .sub-list {
+    margin-top: 20px;
+    background-color: #fff;
+
+    ul {
+      display: flex;
+      padding: 0 32px;
+      flex-wrap: wrap;
+
+      li {
+        width: 168px;
+        height: 160px;
+
+
+        a {
+          text-align: center;
+          display: block;
+          font-size: 16px;
+
+          img {
+            width: 100px;
+            height: 100px;
+          }
+
+          p {
+            line-height: 40px;
+          }
+
+          &:hover {
+            color: $xtxColor;
+          }
+        }
+      }
+    }
+  }
+
+  .ref-goods {
+    background-color: #fff;
+    margin-top: 20px;
+    position: relative;
+
+    .head {
+      .xtx-more {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .tag {
+        text-align: center;
+        color: #999;
+        font-size: 20px;
+        position: relative;
+        top: -20px;
+      }
+    }
+
+    .body {
+      display: flex;
+      justify-content: space-around;
+      padding: 0 40px 30px;
+    }
+  }
+
+  .bread-container {
+    padding: 25px 0;
+  }
 }
 
-.sub-container {
-  padding: 20px 10px;
-  background-color: #fff;
+.home-banner {
+  width: 1240px;
+  height: 500px;
+  margin: 0 auto;
 
-  .body {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 10px;
+
+  img {
+    width: 100%;
+    height: 500px;
   }
-
-  .goods-item {
-    display: block;
-    width: 220px;
-    margin-right: 20px;
-    padding: 20px 30px;
-    text-align: center;
-
-    img {
-      width: 160px;
-      height: 160px;
-    }
-
-    p {
-      padding-top: 10px;
-    }
-
-    .name {
-      font-size: 16px;
-    }
-
-    .desc {
-      color: #999;
-      height: 29px;
-    }
-
-    .price {
-      color: $priceColor;
-      font-size: 20px;
-    }
-  }
-
-  .pagination-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-
-
 }
 </style>
