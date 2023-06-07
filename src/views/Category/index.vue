@@ -1,6 +1,6 @@
 <script setup>
 import  {getCategoryAPI}  from "@/apis/category.js";
-import { onMounted, onUpdated, ref } from "vue";
+import { onMounted, onUpdated, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { getBannerAPI } from "@/apis/home";
 import GoodsItem from "../Home/components/GoodsItem.vue";
@@ -12,7 +12,8 @@ const getCategory= async()=>{
   // console.log(res);
 }
 onMounted(()=>getCategory())
-onUpdated(()=>getCategory())
+// onUpdated(()=>getCategory())
+watchEffect(()=>getCategory())
 
 //获取banner
 let bannerData = ref([])
@@ -20,7 +21,7 @@ async function getBanner(){
   const res = await getBannerAPI({
     distributionSite:'2'
   })
-  console.log(bannerData);
+  // console.log(bannerData);
   bannerData.value = res.result
 }
 onMounted(()=>{
@@ -35,7 +36,8 @@ onMounted(()=>{
     <div class="bread-container">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/' }">{{ categoryData.name }}
+        <el-breadcrumb-item :to="{ path: '/' }">
+        {{ categoryData.name }}
         </el-breadcrumb-item>
         <!-- <el-breadcrumb-item>居家</el-breadcrumb-item> -->
       </el-breadcrumb>
@@ -52,7 +54,7 @@ onMounted(()=>{
   <h3>全部分类</h3>
   <ul>
     <li v-for="i in categoryData.children" :key="i.id">
-      <RouterLink to="/">
+      <RouterLink :to="`/category/sub/${i.id}`">
         <img :src="i.picture" />
         <p>{{ i.name }}</p>
       </RouterLink>

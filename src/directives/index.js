@@ -11,7 +11,7 @@ export const lazyPlugin = {
            const {stop} = useIntersectionObserver(
                 el,
                 ([{isIntersecting}])=>{
-                    console.log(isIntersecting);
+                    // console.log(isIntersecting);
                     if(isIntersecting){
                         //进入市口区域
                         //拿到元素

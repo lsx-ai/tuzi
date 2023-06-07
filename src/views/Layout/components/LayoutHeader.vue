@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUpdated, watch } from "vue";
+import { onMounted, onUpdated, watch, watchEffect } from "vue";
 import getCategoryAPI from "@/apis/layout.js";
 import { ref } from "vue";
 
@@ -15,6 +15,7 @@ onMounted(()=>{
   getCategory()
   
 })
+
 
 
 </script>
