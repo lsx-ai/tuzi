@@ -13,7 +13,7 @@ const getCategory= async()=>{
 }
 onMounted(()=>getCategory())
 // onUpdated(()=>getCategory())
-watchEffect(()=>getCategory())
+// watchEffect(()=>getCategory())
 
 //获取banner
 let bannerData = ref([])

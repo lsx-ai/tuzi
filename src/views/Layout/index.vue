@@ -11,7 +11,7 @@ import LayoutFooter from './components/LayoutFooter.vue'
     <!-- <LayoutFixed></LayoutFixed> -->
   <LayoutNav />
   <LayoutHeader />
-  <RouterView />
+  <RouterView :key="$route.fullPath" />
   <LayoutFooter />
 
 </template>

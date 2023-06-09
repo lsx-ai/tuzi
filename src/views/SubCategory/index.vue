@@ -5,21 +5,22 @@ import { useRoute } from 'vue-router';
 import GoodsItem from '../Home/components/GoodsItem.vue';
 // import getSubCategoryAPI from '@/apis/category.js'
 //获取面包屑导航数据
-const categoryFilter = ref({})
-const route = useRoute()
-const getCategoryData = async()=>{
-    const res = await getCategoryFilterAPI(route.params.id)
-    categoryFilter.value = res.result
-    // console.log(categoryFilter.value);
-}
 
+const route = useRoute()
+// 获取面包屑导航数据
+const filterData = ref({})
+const getFilterData = async () => {
+  const res = await getCategoryFilterAPI(route.params.id)
+  filterData.value = res.result
+}
 onMounted(()=>{
-    getCategoryData()
+    getFilterData()
 })
 
 
+
 //基础列表渲染
-const goodList = ref([])
+let goodList = ref([])
 const reqData = ref({
   categoryId: route.params.id,
   page: 1,
@@ -30,30 +31,59 @@ const reqData = ref({
 const getGoodList = async () => {
   const res = await getSubCategoryAPI(reqData.value)
   console.log(res)
+  // console.log(reqData);
   goodList.value = res.result.items
 }
   
 onMounted(() => getGoodList())
+
+//tab切换回调
+const tabechange = ()=>{
+  // console.log('nihao',reqData);
+  getGoodList()
+}
+
+//加载更多
+const load = async()=>{
+  // console.log('jiazai');
+  //获取下一页数据
+  reqData.value.page++
+  //请求下一页数据
+  const res = await getSubCategoryAPI(reqData.value)
+// console.log(res.result);
+//数据拼接，老数据展开
+goodList.value = [...goodList.value,...res.result.items]
+//加载完毕停止监听
+const disabled = ref(false)
+if(res.result.items.length === 0)
+disabled.value = true
+}
 </script>
 
 <template>
   <div class="container ">
+    <el-backtop target=".container">
+      <i class="el-icon-caret-top"></i>
+      </el-backtop>
     <!-- 面包屑 -->
     <div class="bread-container">
       <el-breadcrumb separator=">">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: `/category/${categoryFilter.parentId}` }">{{ categoryFilter.parentName }}
+        <el-breadcrumb-item :to="{ path: `/category/${filterData.parentId}` }">{{ filterData.parentName }}
         </el-breadcrumb-item>
-        <el-breadcrumb-item>{{categoryFilter.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{filterData.name}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs v-model="reqData.sortField" @tab-change="tabechange" >
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      
+      <div class="body" 
+      v-infinite-scroll="load"
+      :infinite-scroll-disabled = "disabled">
          <!-- 商品列表-->
          <GoodsItem v-for="goods in goodList" :goods="goods" :key="goods.id"></GoodsItem>
       </div>
