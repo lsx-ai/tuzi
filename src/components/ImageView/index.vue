@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue"
+import { ref, watch } from "vue"
+import { useMouseInElement } from "@vueuse/core";
 
 // 图片列表
 const imageList = [
@@ -19,16 +20,62 @@ const enterhandler = (i) =>{
     // console.log(activeIndex.value);
 }
 
+//放大镜操作，获取鼠标相对位置
+const target = ref(null)
+const {elementX,elementY,isOutside} = useMouseInElement(target)
+//控制鼠标跟随滑块移动
+const left = ref(0)
+const top = ref(0)
+
+//大图坐标
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX,elementY,isOutside],()=>{
+    // console.log('bianhua');
+    //如果鼠标不在盒子里不执行逻辑
+    if(isOutside.value) return
+    //控制滑块距离
+    //横向
+    if(elementX.value>100&&elementX.value<300){
+        left.value = elementX.value -100
+    }
+    //纵向
+    if(elementY.value>100&&elementY.value<300){
+        top.value = elementY.value -100
+    }
+
+    //边界处理
+    if(elementX>300 ){
+        left.value = 200
+    }
+    if(elementX<100){
+        left.value = 0
+    }
+    if(elementY>300 ){
+        top.value = 200
+    }
+    if(elementY<100){
+        top.value = 0
+    }
+
+    //控制打图展示
+    positionX.value = -left.value*2
+    positionY.value = -top.value*2
+
+})
+
+
 </script>
 
 
 <template>
+    <!-- {{ elementX }},{{ elementY }},{{ isOutside }} -->
   <div class="goods-image">
     <!-- 左侧大图-->
-    <div class="middle" ref="target">
-      <img :src="imageList[activeIndex]" alt="" />
+    <div class="middle" >
+      <img ref="target" :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+      <div  v-show="!isOutside" class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -39,11 +86,11 @@ const enterhandler = (i) =>{
     <!-- 放大镜大图 -->
     <div class="large" :style="[
       {
-        backgroundImage: `url(${imageList[0]})`,
-        backgroundPositionX: `0px`,
-        backgroundPositionY: `0px`,
+        backgroundImage: `url(${imageList[activeIndex]})`,
+        backgroundPositionX: `${positionX}px`,
+        backgroundPositionY: `${positionY}px`,
       },
-    ]" v-show="false"></div>
+    ]" v-show="!isOutside"></div>
   </div>
 </template>
 
