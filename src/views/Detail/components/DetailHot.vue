@@ -31,12 +31,12 @@ const getfetchHotGoods = async () =>{
 
   })
   fetchHotGoods.value = res.result
-  console.log(fetchHotGoods.value);
+  // console.log(fetchHotGoods.value);
 }
 
 onMounted(()=>{
   getfetchHotGoods()
-  console.log();
+  // console.log();
 })
 </script>
 

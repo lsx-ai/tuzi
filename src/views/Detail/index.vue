@@ -2,8 +2,9 @@
 import { getDetail } from '@/apis/detail.js';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+// import XtxSku from '@/components/XtxSku/index.vue'
 import  DetailHot from './components/DetailHot.vue'
-import ImageView from '@/components/ImageView/index.vue';
+// import ImageView from '@/components/ImageView/index.vue';
 const goods = ref({})
 const route = useRoute()
 
@@ -12,11 +13,16 @@ const getGoods = async ()=>{
 // console.log(res);
     goods.value = res.result
     // console.log(goods.value);
-    // console.log(goods.value.details.pictures);
+    // console.log(goods.value.mainPictures);
 }
 onMounted(()=>{
     getGoods()
 })
+
+//sku规格被操作时
+const skuChange = (sku)=>{
+  console.log(sku);
+}
 </script>
 
 <template>
@@ -40,7 +46,7 @@ onMounted(()=>{
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView></ImageView>
+              <XtxImageView :image-list="goods.mainPictures"></XtxImageView>
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
@@ -89,7 +95,7 @@ onMounted(()=>{
                 </dl>
               </div>
               <!-- sku组件 -->
-
+              <XtxSku :goods = 'goods' @change="skuChange"></XtxSku>
               <!-- 数据组件 -->
 
               <!-- 按钮组件 -->
