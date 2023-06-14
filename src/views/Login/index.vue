@@ -4,20 +4,24 @@
 
 // import { rule } from "postcss";
 import { ref } from "vue";
-
+import {useUserStore} from '@/stores/user'
+import { useRouter } from "vue-router";
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 //1，准备表单对象
 const from = ref({
   account:'',
-  password:''
+  password:'',
+  agree:true
 })
 //准备规则对象
 
 const rules = {
   account:[{
-    required:true,message:'账号空',trigger:'blur'
+    required:true,message:'用户名不能为空',trigger:'blur'
   }],
   password:[{
-    required:true,message:'密码为空',trigger:'blur'
+    required:true,message:'密码不能为空',trigger:'blur'
   },{
     min:6,max:14,message:'密码长度不符合',trigger:'blur'
   }],
@@ -35,8 +39,31 @@ const rules = {
   }
   ]
 }
+//heima282
+//hm#qd@23!
+const router = useRouter()
+//获取表单实例
+const fromRef = ref(null)
+//pinia用户实例
+const userStore = useUserStore()
+const doLogin = ()=>{
+  const {account,password} = from.value
+  fromRef.value.validate(async(valid)=>{
+    // console.log(valid);
+    //valid在通过校验时会为true
+    if(valid){
+      //此处为登陆逻辑
+      // const res =  await loginAPI({account,password})
+      // console.log(res);
+      await userStore.getUserInfo({account,password})
+      ElMessage({type:'success',message:'登陆成功'})
+      // alert('登陆成功')
+      console.log(userStore.userInfo);
+      router.replace('/')
+    }
+  })
 
-//
+}
 </script>
 
 
@@ -61,7 +88,7 @@ const rules = {
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form :model="from" :rules="rules" label-position="right" label-width="60px"
+            <el-form ref="fromRef" :model="from" :rules="rules" label-position="right" label-width="60px"
               status-icon>
               <el-form-item prop="account"  label="账户">
                 <el-input v-model="from.account"/>
@@ -74,7 +101,7 @@ const rules = {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button @click="doLogin"  size="large" class="subBtn">点击登录</el-button>
             </el-form>
           </div>
         </div>
