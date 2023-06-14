@@ -1,4 +1,9 @@
 <script setup>
+import { defineStore } from "pinia";
+
+import {useUserStore} from '@/stores/user'
+import { reactive, ref } from "vue";
+const userData = useUserStore()
 
 </script>
 
@@ -6,8 +11,8 @@
   <nav class="app-topnav">
     <div class="container">
       <ul>
-        <template v-if="false">
-          <li><a href="javascript:;"><i class="iconfont icon-user"></i>周杰伦</a></li>
+        <template v-if="userData.userInfo.token">
+          <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{userData.userInfo.nickname}}</a></li>
           <li>
             <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
               <template #reference>
