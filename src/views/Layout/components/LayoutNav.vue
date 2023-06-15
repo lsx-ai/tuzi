@@ -5,6 +5,10 @@ import {useUserStore} from '@/stores/user'
 import { reactive, ref } from "vue";
 const userData = useUserStore()
 
+const confirm = () =>{
+  userData.clearUserInfo()
+}
+
 </script>
 
 <template>
@@ -14,7 +18,7 @@ const userData = useUserStore()
         <template v-if="userData.userInfo.token">
           <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{userData.userInfo.nickname}}</a></li>
           <li>
-            <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
+            <el-popconfirm @confirm = 'confirm' title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
               <template #reference>
                 <a href="javascript:;">退出登录</a>
               </template>
