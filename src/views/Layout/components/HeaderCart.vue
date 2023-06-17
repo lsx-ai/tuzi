@@ -1,12 +1,16 @@
 <script setup>
 import { useCartStare } from '@/stores/cartStore';
 const cartStore = useCartStare()
+
+const i = ()=>{
+  console.log(cartStore.allPrice,cartStore.allcount);
+}
 </script>
 
 <template>
   <div class="cart">
     <a class="curr" href="javascript:;">
-      <i class="iconfont icon-cart"></i><em>2</em>
+      <i class="iconfont icon-cart"></i><em>{{ cartStore.allcount}}</em>
     </a>
     <div class="layer">
       <div class="list">
@@ -25,16 +29,16 @@ const cartStore = useCartStare()
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)">X</i>
         </div>
        
       </div>
       <div class="foot">
         <div class="total">
-          <p>共 10 件商品</p>
-          <p>&yen; 100.00 </p>
+          <p @click="i">共 {{ cartStore.allcount }} 件商品</p>
+          <p>&yen;{{ cartStore.allPrice }}</p>
         </div>
-        <el-button size="large" type="primary" >去购物车结算</el-button>
+        <el-button @click="$router.push('/cartlist')" size="large" type="primary" >去购物车结算</el-button>
       </div>
     </div>
 </div>

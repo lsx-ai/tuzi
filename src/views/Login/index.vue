@@ -58,7 +58,7 @@ const doLogin = ()=>{
       await userStore.getUserInfo({account,password})
       ElMessage({type:'success',message:'登陆成功'})
       // alert('登陆成功')
-      console.log(userStore.userInfo);
+      // console.log(userStore.userInfo);
       router.replace('/')
     }
   })

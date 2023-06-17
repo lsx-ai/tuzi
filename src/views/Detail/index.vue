@@ -46,7 +46,7 @@ const addCart = ()=>{
       count:count.value,
       skuId:skuObj.skuId,
       attrsText:skuObj.specsText,
-      seleted:true
+      selected:true
     })
     // console.log(cateStore.careList);
   }else{
