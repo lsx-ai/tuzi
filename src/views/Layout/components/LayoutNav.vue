@@ -1,12 +1,16 @@
 <script setup>
 import { defineStore } from "pinia";
-
+import { useCartStare } from "@/stores/cartStore";
 import {useUserStore} from '@/stores/user'
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter()
 const userData = useUserStore()
-
+const cartStore = useCartStare()
 const confirm = () =>{
   userData.clearUserInfo()
+  cartStore.clearCart()
+  router.push('/login')
 }
 
 </script>
@@ -24,7 +28,7 @@ const confirm = () =>{
               </template>
             </el-popconfirm>
           </li>
-          <li><a href="javascript:;">我的订单</a></li>
+          <li><a href="javascript:;" @click="$router.push('/checkout')">我的订单</a></li>
           <li><a href="javascript:;">会员中心</a></li>
         </template>
         <template v-else>

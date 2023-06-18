@@ -84,6 +84,7 @@ export const useCartStare = defineStore('cart',()=>{
         isTrue,
         selectedCount,
         selectedPrice,
-        clearCart
+        clearCart,
+        updateNewList
     }
 })
