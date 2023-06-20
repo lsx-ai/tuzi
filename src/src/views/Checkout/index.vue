@@ -2,8 +2,8 @@
 import { getCheckInfoAPI, createOrderAPI } from '@/apis/checkout'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { useCartStare } from '@/stores/cartStore'
-const cartStore = useCartStare()
+import { useCartStore } from '@/stores/cartStore'
+const cartStore = useCartStore()
 const router = useRouter()
 // 获取结算信息
 const checkInfo = ref({}) // 订单对象
@@ -49,8 +49,7 @@ const createOrder = async () => {
     }),
     addressId: curAddress.value.id
   })
-  const orderId = res.result.items[0].id
-  console.log(res);
+  const orderId = res.result.id
   router.push({
     path: '/pay',
     query: {
@@ -175,7 +174,7 @@ const createOrder = async () => {
     <template #footer>
       <span class="dialog-footer">
         <el-button>取消</el-button>
-        <el-button type="primary"><span  @click="confirm">确定</span></el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
       </span>
     </template>
   </el-dialog>

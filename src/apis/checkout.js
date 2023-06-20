@@ -5,3 +5,12 @@ export const getCheckInfoAPI = () =>{
         url:'/member/order/pre'
     })
 }
+
+//订单
+export const createOrderAPI = (data) =>{
+    return httpInstance({
+        url:'/member/order',
+        methods:'POST',
+        data
+    })
+}
